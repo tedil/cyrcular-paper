@@ -1,0 +1,31 @@
+from snakemake.utils import min_version
+
+min_version("6.15")
+
+configfile: "config/config.yaml"
+
+
+module calling:
+    snakefile:
+        github(
+            "tedil/cyrcular-calling",
+            path="workflow/Snakefile",
+            commit="91dcddf38dc95076d5c3a6278db92e143e437dfb",
+        )
+    config:
+        {"calling": config["calling"]}
+
+
+use rule * from calling as calling_*
+
+
+rule add_plasmids_to_reference:
+    input: 
+        genome="resources/genome.fasta",
+        plasmid_ALK="resources/plasmid_ALK.fa",
+        plasmid_MYC="resources/plasmid_MYC.fa",
+    output:
+        modified_genome="resources/genome_with_plasmids.fasta"
+    log: "logs/add_plasmids_to_reference.log"
+    shell: 
+        """cat {input.genome} {input.plasmid_ALK} {input.plasmid_MYC} > {output.modified_genome} 2> {log}"""

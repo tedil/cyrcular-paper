@@ -1,0 +1,31 @@
+calling:
+  samples: config/samples.tsv
+  units: config/units.tsv
+
+  reference:
+    name: "genome_with_plasmids"
+    # Custom path overrides everything below that, if file exists
+    # (in that case, path must match "resources/" + name + ".fasta")
+    path: "resources/genome_with_plasmids.fasta"
+    # The first n entries of the FASTA will be considered.
+    n_chromosomes: 25
+    # Ensembl species name
+    species: homo_sapiens
+    # Ensembl release
+    release: 100
+    # Genome build
+    build: GRCh38
+
+  min_read_depth: 2
+  min_split_reads: 5
+  max_paths_per_component: 15
+  max_deletion_length: 10000
+
+  filter:
+    fdr-control:
+      threshold: 0.05
+      local: true
+      events:
+        circular:
+          varlociraptor:
+            - present
